@@ -1,12 +1,16 @@
 package com.challenge.restaurant.Restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by sachin on 4/7/19.
  */
 @Entity
 @Table(name = "delivery_person")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DeliveryPerson {
     @Id
     @GeneratedValue
@@ -16,12 +20,9 @@ public class DeliveryPerson {
     String name;
 
     @Column
-    String status;
+    Boolean active;
 
-    @Column
-    Boolean isActive;
-
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     Order order;
 
     DeliveryPerson(){}
@@ -46,20 +47,11 @@ public class DeliveryPerson {
         this.name = name;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public Boolean getActive() {
-        return isActive;
+        return active;
     }
-
     public void setActive(Boolean active) {
-        isActive = active;
+        this.active = active;
     }
 
     public Order getOrder() {

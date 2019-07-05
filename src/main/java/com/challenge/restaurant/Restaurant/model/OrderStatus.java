@@ -5,7 +5,8 @@ package com.challenge.restaurant.Restaurant.model;
  */
 
 public enum OrderStatus {
-    PLACED("placed"),BAKING("baking"),READY_TO_DELIVER("ready to deliver");
+    PLACED("placed"),BAKING("baking"),READY_TO_DELIVER("ready to deliver"),
+    PICKED("picked"),ENROUNTE("en-route"),DELEVERED("delivered");
     private final String text;
 
     OrderStatus(final String text){
@@ -13,6 +14,9 @@ public enum OrderStatus {
     }
 
 
+    public String getText() {
+        return text;
+    }
 
     @Override
     public String toString() {

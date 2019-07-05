@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * Created by sachin on 4/7/19.
  */
-@Repository
 public interface OrderRepository extends JpaRepository<Order,Long> {
 
     Order findOrderById(Long id);

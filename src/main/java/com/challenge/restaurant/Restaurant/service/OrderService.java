@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * Created by sachin on 4/7/19.
@@ -22,9 +23,8 @@ public class OrderService {
 
         if (order == null || order.getItemName()==null)
             throw new IllegalOrderException("Invalid order!!");
-
-        order.setStatus(OrderStatus.PLACED.name());
-        order.setPerson(null);
+        order.setOrderPlacedTime(new Date());
+        order.setStatus(OrderStatus.PLACED.getText());
 
         return orderRepository.save(order);
     }
@@ -38,16 +38,16 @@ public class OrderService {
     public Order updateStatus(Order order) {
 
         Order orderFound= searchOrder(order.getId());
+        try {
+            OrderStatus status = OrderStatus.valueOf(order.getStatus());
+            if (Arrays.asList(OrderStatus.values()).contains(status)){
+                orderFound.setStatus(status.getText());
+            }
+        } catch (IllegalArgumentException e) {
+            throw new IllegalOrderException("invalid order status");
 
-        if (OrderStatus.BAKING.name().equals(order.getStatus())){
-            order.setStatus(OrderStatus.BAKING.name());
-        }else if (OrderStatus.PLACED.name().equals(order.getStatus())){
-            order.setStatus(OrderStatus.PLACED.name());
-        }else if (OrderStatus.READY_TO_DELIVER.name().equals(order.getStatus())){
-            order.setStatus(OrderStatus.READY_TO_DELIVER.name());
-        }else {
-            throw new IllegalOrderException("Invalid status");
         }
+
 
         orderRepository.save(orderFound);
 

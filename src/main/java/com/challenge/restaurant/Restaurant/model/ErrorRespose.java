@@ -1,8 +1,11 @@
 package com.challenge.restaurant.Restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  * Created by sachin on 4/7/19.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorRespose {
 
     String message;

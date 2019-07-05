@@ -1,7 +1,9 @@
 package com.challenge.restaurant.Restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  * Created by sachin on 4/7/19.
@@ -9,6 +11,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "order_table")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Order {
 
     @Id
@@ -22,10 +25,10 @@ public class Order {
     Integer cost;
 
     @Column
-    String status;
+    Date orderPlacedTime;
 
-    @OneToOne(fetch = FetchType.LAZY,mappedBy = "order")
-    DeliveryPerson person;
+    @Column
+    String status;
 
     Order(){}
 
@@ -65,11 +68,11 @@ public class Order {
         this.status = status;
     }
 
-    public DeliveryPerson getPerson() {
-        return person;
+    public Date getOrderPlacedTime() {
+        return orderPlacedTime;
     }
 
-    public void setPerson(DeliveryPerson person) {
-        this.person = person;
+    public void setOrderPlacedTime(Date orderPlacedTime) {
+        this.orderPlacedTime = orderPlacedTime;
     }
 }
