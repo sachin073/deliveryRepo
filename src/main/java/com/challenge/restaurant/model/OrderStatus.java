@@ -1,4 +1,4 @@
-package com.challenge.restaurant.Restaurant.model;
+package com.challenge.restaurant.model;
 
 /**
  * Created by sachin on 4/7/19.

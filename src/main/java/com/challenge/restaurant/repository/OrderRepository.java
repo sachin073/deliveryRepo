@@ -1,8 +1,9 @@
-package com.challenge.restaurant.Restaurant.repository;
+package com.challenge.restaurant.repository;
 
-import com.challenge.restaurant.Restaurant.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import com.challenge.restaurant.model.Order;
 
 import java.util.List;
 
@@ -11,5 +12,5 @@ import java.util.List;
  */
 public interface OrderRepository extends JpaRepository<Order,Long> {
 
-    Order findOrderById(Long id);
+    Order findOrderById(long id);
 }

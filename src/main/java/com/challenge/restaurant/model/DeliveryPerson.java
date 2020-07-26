@@ -1,4 +1,4 @@
-package com.challenge.restaurant.Restaurant.model;
+package com.challenge.restaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

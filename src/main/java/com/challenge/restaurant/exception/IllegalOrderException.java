@@ -1,4 +1,4 @@
-package com.challenge.restaurant.Restaurant.exception;
+package com.challenge.restaurant.exception;
 
 /**
  * Created by sachin on 4/7/19.

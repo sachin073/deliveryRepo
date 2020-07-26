@@ -1,9 +1,10 @@
-package com.challenge.restaurant.Restaurant.repository;
+package com.challenge.restaurant.repository;
 
-import com.challenge.restaurant.Restaurant.model.DeliveryPerson;
-import com.challenge.restaurant.Restaurant.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import com.challenge.restaurant.model.DeliveryPerson;
+import com.challenge.restaurant.model.Order;
 
 import java.util.List;
 
