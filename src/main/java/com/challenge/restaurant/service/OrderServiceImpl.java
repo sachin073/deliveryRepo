@@ -1,19 +1,18 @@
 package com.challenge.restaurant.service;
 
-import com.challenge.restaurant.controller.OrderController;
-import com.challenge.restaurant.exception.IllegalOrderException;
-import com.challenge.restaurant.model.ErrorRespose;
-import com.challenge.restaurant.model.Order;
-import com.challenge.restaurant.model.OrderStatus;
-import com.challenge.restaurant.repository.OrderRepository;
+import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Date;
+import com.challenge.restaurant.exception.IllegalOrderException;
+import com.challenge.restaurant.model.ErrorRespose;
+import com.challenge.restaurant.model.Order;
+import com.challenge.restaurant.model.OrderStatus;
+import com.challenge.restaurant.repository.OrderRepository;
+import com.challenge.restaurant.utils.OrderValidationUtils;
 
 /**
  * Created by sachin on 4/7/19.
@@ -29,9 +28,9 @@ public class OrderServiceImpl implements OrderService {
 
 		if (order == null || order.getItemName() == null)
 			throw new IllegalOrderException("Invalid order!!");
-		order.setOrderPlacedTime(new Date());
-		order.setStatus(OrderStatus.PLACED.getText());
-
+		order.setOrderPlacedTime(LocalDateTime.now());
+		order.setStatus(OrderStatus.PLACED.getText().toUpperCase());
+		
 		return orderRepository.save(order);
 	}
 
@@ -39,7 +38,7 @@ public class OrderServiceImpl implements OrderService {
 	public Order searchOrder(long id) {
 		Order order = orderRepository.findOrderById(id);
 		if (order == null) {
-			new ResponseEntity<ErrorRespose>(new ErrorRespose(OrderController.ORDER_NOT_FOUND_MSG + id), HttpStatus.NOT_FOUND);
+			new ResponseEntity<ErrorRespose>(new ErrorRespose(OrderValidationUtils.ORDER_NOT_FOUND_MSG + id), HttpStatus.NOT_FOUND);
 		}
 		return order;
 	}

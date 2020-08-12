@@ -1,15 +1,18 @@
 package com.challenge.restaurant.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import java.time.LocalDateTime;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.NumberFormat;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * Created by sachin on 4/7/19.
@@ -25,18 +28,13 @@ public class Order {
 	Long id;
 
 	@Column
-	@NotNull(message = "name is required")
-	@Size(min = 2, max = 30)
 	String itemName;
 
 	@Column
-	@NotNull(message = "cost is required")
-	@NumberFormat(pattern = "?\\d+(\\.\\d+)?")
 	Integer cost;
 
 	@Column
-	@Null
-	Date orderPlacedTime;
+	LocalDateTime orderPlacedTime;
 
 	@Column
 	String status;
@@ -46,6 +44,11 @@ public class Order {
 
 	public Order(String itemName) {
 		this.itemName = itemName;
+	}
+	
+	public Order(String itemName,int cost) {
+		this.itemName = itemName;
+		this.cost = cost;
 	}
 
 	public Long getId() {
@@ -80,11 +83,11 @@ public class Order {
 		this.status = status;
 	}
 
-	public Date getOrderPlacedTime() {
+	public LocalDateTime getOrderPlacedTime() {
 		return orderPlacedTime;
 	}
 
-	public void setOrderPlacedTime(Date orderPlacedTime) {
+	public void setOrderPlacedTime(LocalDateTime orderPlacedTime) {
 		this.orderPlacedTime = orderPlacedTime;
 	}
 }

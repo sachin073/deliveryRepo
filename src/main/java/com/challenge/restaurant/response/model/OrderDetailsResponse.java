@@ -1,5 +1,6 @@
 package com.challenge.restaurant.response.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class OrderDetailsResponse {
@@ -10,7 +11,7 @@ public class OrderDetailsResponse {
 
 	Integer cost;
 
-	Date orderPlacedTime;
+	LocalDateTime orderPlacedTime;
 
 	String status;
 
@@ -38,11 +39,11 @@ public class OrderDetailsResponse {
 		this.cost = cost;
 	}
 
-	public Date getOrderPlacedTime() {
+	public LocalDateTime getOrderPlacedTime() {
 		return orderPlacedTime;
 	}
 
-	public void setOrderPlacedTime(Date orderPlacedTime) {
+	public void setOrderPlacedTime(LocalDateTime orderPlacedTime) {
 		this.orderPlacedTime = orderPlacedTime;
 	}
 

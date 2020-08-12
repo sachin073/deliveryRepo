@@ -1,5 +1,20 @@
 package com.challenge.restaurant.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.challenge.restaurant.model.DeliveryPerson;
 import com.challenge.restaurant.model.ErrorRespose;
 import com.challenge.restaurant.model.Order;
@@ -9,13 +24,7 @@ import com.challenge.restaurant.response.mapper.OrderMapperService;
 import com.challenge.restaurant.response.model.OrderDetailsResponse;
 import com.challenge.restaurant.service.OrderService;
 import com.challenge.restaurant.service.PersonService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import com.challenge.restaurant.utils.OrderValidationUtils;
 
 /**
  * Created by sachin on 4/7/19.
@@ -33,75 +42,57 @@ public class OrderController {
 	@Autowired
 	OrderMapperService mapperService;
 
-	public static final String ORDER_NOT_FOUND_MSG = "No order exist by id ";
+	@PostMapping(path = "/order")
+	public ResponseEntity<OrderDetailsResponse> placeorder(@RequestBody OrderRequest order) {
 
-	@PostMapping(path = "/order/place")
-	public ResponseEntity<String> placeorder(@RequestBody OrderRequest order) {
-
-		Order placedOrder = new Order(order.getItemName());
+		Order placedOrder = new Order(order.getItemName(), order.getCost());
 
 		orderService.createOrder(placedOrder);
 
-		return new ResponseEntity<String>(mapperService.mapOrderIdentifier(placedOrder), HttpStatus.OK);
+		return new ResponseEntity<>(mapperService.mapOrderDetails(placedOrder), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/orders/{id}", method = RequestMethod.GET)
 	public ResponseEntity<OrderDetailsResponse> getStatus(@PathVariable("id") String id) {
-		String orderSubs = id.substring(4);
-		long oId = 0l;
-		try {
-			oId = Long.valueOf(orderSubs);
-		} catch (NumberFormatException e) {
-			new ResponseEntity<ErrorRespose>(new ErrorRespose(ORDER_NOT_FOUND_MSG + id), HttpStatus.NOT_FOUND);
-		}
+		long oId = OrderValidationUtils.parseOrderId(id);
 
 		Order placedOrder = orderService.searchOrder(oId);
 
 		if (placedOrder == null) {
-			new ResponseEntity<ErrorRespose>(new ErrorRespose(ORDER_NOT_FOUND_MSG + id), HttpStatus.NOT_FOUND);
+			new ResponseEntity<ErrorRespose>(new ErrorRespose(OrderValidationUtils.ORDER_NOT_FOUND_MSG + id),
+					HttpStatus.NOT_FOUND);
 		}
 
 		return new ResponseEntity<>(mapperService.mapOrderDetails(placedOrder), HttpStatus.OK);
 	}
 
-	@DeleteMapping(value = "/order/{id}")
+	@DeleteMapping(value = "/orders/{id}")
 	public ResponseEntity<OrderDetailsResponse> deleteOrder(@PathVariable("id") String id) {
 
-		String orderSubs = id.substring(4);
-		long oId = 0l;
-		try {
-			oId = Long.valueOf(orderSubs);
-		} catch (NumberFormatException e) {
-			new ResponseEntity<ErrorRespose>(new ErrorRespose(ORDER_NOT_FOUND_MSG + id), HttpStatus.NOT_FOUND);
-		}
+		long oId = OrderValidationUtils.parseOrderId(id);
 
 		Order placedOrder = orderService.searchOrder(oId);
 		if (placedOrder == null) {
-			new ResponseEntity<ErrorRespose>(new ErrorRespose(ORDER_NOT_FOUND_MSG + id), HttpStatus.NOT_FOUND);
+			new ResponseEntity<ErrorRespose>(new ErrorRespose(OrderValidationUtils.ORDER_NOT_FOUND_MSG + id),
+					HttpStatus.NOT_FOUND);
 		}
 		orderService.deleteOrder(oId);
 
 		return new ResponseEntity<>(mapperService.mapOrderDetails(placedOrder), HttpStatus.OK);
 	}
 
-	@PutMapping(path = "/order/{id}/status/{status}")
+	@PutMapping(path = "/orders/{id}/status/{status}")
 	public ResponseEntity<OrderDetailsResponse> updateStatus(@PathVariable String id,
 			@PathVariable OrderStatus status) {
 
-		String orderSubs = id.substring(4);
-		long oId = 0l;
-		try {
-			oId = Long.valueOf(orderSubs);
-		} catch (NumberFormatException e) {
-			new ResponseEntity<ErrorRespose>(new ErrorRespose(ORDER_NOT_FOUND_MSG + id), HttpStatus.NOT_FOUND);
-		}
+		long oId = OrderValidationUtils.parseOrderId(id);
 
-		Order placedOrder = orderService.updateStatus(oId,status);
+		Order placedOrder = orderService.updateStatus(oId, status);
 
 		return new ResponseEntity<>(mapperService.mapOrderDetails(placedOrder), HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/order/getDeliveryReport")
+	@GetMapping(path = "/orders/getDeliveryReport")
 	public ResponseEntity<List<DeliveryPerson>> getDeliveryReport() {
 		List<DeliveryPerson> personList = null;
 		personList = deliveryPersonService.getAllActive();

@@ -2,14 +2,26 @@ package com.challenge.restaurant.request.model;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
+
+import org.springframework.format.annotation.NumberFormat;
+
 public class OrderRequest {
 
+	@NotNull(message = "name is required")
+	@Size(min = 2, max = 30)
     String itemName;
 
+	@NotNull(message = "cost is required")
+	@NumberFormat(pattern = "?\\d+(\\.\\d+)?")
     Integer cost;
 
+	@Null
     Date orderPlacedTime;
-    
+	
+	@NotNull(message = "cost is required")
     String deliveryAddress;
 
 	public String getItemName() {

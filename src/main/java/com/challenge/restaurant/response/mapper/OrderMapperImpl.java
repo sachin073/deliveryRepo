@@ -16,6 +16,7 @@ public class OrderMapperImpl implements OrderMapperService {
 		orderResponse.setId("DEL+"+order.getId().toString());
 		orderResponse.setItemName(order.getItemName());
 		orderResponse.setStatus(order.getStatus());
+		orderResponse.setOrderPlacedTime(order.getOrderPlacedTime());
 		return orderResponse;
 	}
 

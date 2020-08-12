@@ -1,5 +1,6 @@
 package com.challenge.restaurant.service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,9 +61,6 @@ public class DeliveryPersonServiceImpl implements PersonService, DeliveryService
 		if (person.getActive()) {
 			deliveryDetailsMap.put("Scheduled for delivery", "Yes");
 			deliveryDetailsMap.put("Order Details", person.getOrder());
-			deliveryDetailsMap.put("Time Left to deliver",
-					(person.getOrder().getOrderPlacedTime().getTime() - System.currentTimeMillis()) / (60 * 1000) % 60
-							+ " mins");
 		} else {
 			deliveryDetailsMap.put("Scheduled for delivery", "Yes");
 		}
