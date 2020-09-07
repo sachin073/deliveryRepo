@@ -38,7 +38,7 @@ public class OrderServiceImpl implements OrderService {
 	public Order searchOrder(long id) {
 		Order order = orderRepository.findOrderById(id);
 		if (order == null) {
-			new ResponseEntity<ErrorRespose>(new ErrorRespose(OrderValidationUtils.ORDER_NOT_FOUND_MSG + id), HttpStatus.NOT_FOUND);
+			throw new IllegalOrderException(OrderValidationUtils.ORDER_NOT_FOUND_MSG + id);
 		}
 		return order;
 	}
